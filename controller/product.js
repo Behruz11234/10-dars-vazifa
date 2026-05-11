@@ -105,7 +105,7 @@ const updateProduct = async (req, res) => {
 };
 
 
-  //  5
+//  5
 const deleteProducts = async (req, res) => {
   try {
     const { id } = req.params;
@@ -136,10 +136,32 @@ const deleteProducts = async (req, res) => {
     });
   }
 };
-  module.exports = {
-    getALLProducts,
+//6
+const removeCHecked = async (req, res) => {
+  try {
+    const todos = read_file("todo.json");
+
+    const filteredtodos = todos.filter(
+      (todo) => todo.completed === false
+
+    );
+    write_file("todo.json", filteredtodos);
+    res.status(200).json({
+      massage: "checked todos removed",
+
+    })
+ 
+
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+  module.exports = {    getALLProducts,
     addProduct,
     getOneProduct,
     updateProduct,
-    deleteProducts
-  }
+    deleteProducts,
+    removeCHecked}
