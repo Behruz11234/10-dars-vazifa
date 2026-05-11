@@ -136,7 +136,7 @@ const deleteProducts = async (req, res) => {
     });
   }
 };
-//6
+//6 remove 
 const removeCHecked = async (req, res) => {
   try {
     const todos = read_file("todo.json");
@@ -158,6 +158,8 @@ const removeCHecked = async (req, res) => {
     })
   }
 }
+
+// taskdone
 
   module.exports = {    getALLProducts,
     addProduct,
