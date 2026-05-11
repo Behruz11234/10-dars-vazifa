@@ -160,10 +160,64 @@ const removeCHecked = async (req, res) => {
 }
 
 // taskdone
+const toggleTaskStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const tasks = read_file("tasks.json");
 
-  module.exports = {    getALLProducts,
+        
+        const foundedTask = tasks.find((pro) => pro.id == id);
+
+        if (!foundedTask) {
+            return res.status(404).json({
+                message: "task not found"
+            });
+        }
+
+        
+        tasks.forEach(taskk => {
+            if (taskk.id == id) {
+                
+                taskk.is_completed = !taskk.is_completed;
+            }
+        });
+
+        
+        write_file("tasks.json", tasks);
+
+        res.status(200).json({
+            message: "Task status toggled",
+            current_status: foundedTask.is_completed 
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+const countCompletedTasks = async (req, res) => {
+    try {
+        const tasks = read_file("tasks.json");
+
+        const completedCount = tasks.filter(task => task.is_completed === true).length;
+        const totalCount = tasks.length;
+
+        res.status(200).json({
+            completed_tasks: completedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+  module.exports = {    
+    getALLProducts,
     addProduct,
     getOneProduct,
     updateProduct,
     deleteProducts,
-    removeCHecked}
+    removeCHecked,
+    countCompletedTasks
+  }
